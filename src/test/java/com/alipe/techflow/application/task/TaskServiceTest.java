@@ -3,12 +3,14 @@ package com.alipe.techflow.application.task;
 import com.alipe.techflow.domain.model.Project;
 import com.alipe.techflow.domain.model.ProjectStatus;
 import com.alipe.techflow.domain.model.Priority;
+import com.alipe.techflow.domain.model.Task;
 import com.alipe.techflow.domain.model.User;
 import com.alipe.techflow.domain.repository.ProjectRepository;
 import com.alipe.techflow.domain.repository.TaskRepository;
 import com.alipe.techflow.infrastructure.messaging.TaskEventPublisher;
 import com.alipe.techflow.infrastructure.security.CurrentUser;
 import org.junit.jupiter.api.Test;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
@@ -58,7 +60,7 @@ class TaskServiceTest {
 
     @Test
     void shouldListTasksUsingPagination() {
-        var page = new PageImpl<>(List.of());
+        Page<Task> page = new PageImpl<>(List.of());
         var pageable = PageRequest.of(0, 20);
         given(currentUser.id()).willReturn(1L);
         given(projects.findByIdAndOwnerId(10L, 1L)).willReturn(Optional.of(mock(Project.class)));
