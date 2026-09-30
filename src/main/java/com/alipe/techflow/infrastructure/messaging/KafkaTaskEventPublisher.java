@@ -1,6 +1,6 @@
 package com.alipe.techflow.infrastructure.messaging;
 
-import org.apache.kafka.common.errors.KafkaException;
+import org.apache.kafka.common.KafkaException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
