@@ -1,0 +1,65 @@
+spring:
+  application:
+    name: techflow-api
+  datasource:
+    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5432}/${POSTGRES_DB:techflow}
+    username: ${POSTGRES_USER:techflow}
+    password: ${POSTGRES_PASSWORD:techflow}
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        format_sql: true
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+  cache:
+    type: redis
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+  threads:
+    virtual:
+      enabled: true
+  main:
+    keep-alive: true
+  jackson:
+    default-property-inclusion: non_null
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      probes:
+        enabled: true
+  health:
+    redis:
+      enabled: false
+
+server:
+  port: 8080
+  shutdown: graceful
+
+app:
+  kafka:
+    enabled: ${APP_KAFKA_ENABLED:false}
+    topic: techflow.events
+  jwt:
+    secret: ${JWT_SECRET:change-me-to-a-long-random-secret-with-at-least-32-characters}
+    issuer: ${JWT_ISSUER:techflow-api}
+    expiration-minutes: ${JWT_EXPIRATION_MINUTES:60}
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
