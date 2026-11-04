@@ -144,6 +144,46 @@ paths:
                 status: {type: string, enum: [TODO, IN_PROGRESS, DONE, CANCELED]}
       responses:
         '200': {description: Status alterado}
+  /api/v1/admin/users:
+    get:
+      summary: Lista todos os usuários (somente ADMIN)
+      parameters:
+        - {$ref: '#/components/parameters/page'}
+        - {$ref: '#/components/parameters/size'}
+      responses:
+        '200':
+          description: Página de usuários
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserPage'
+        '403': {description: Acesso negado}
+  /api/v1/admin/summary:
+    get:
+      summary: Resumo com a quantidade de usuários (somente ADMIN)
+      responses:
+        '200':
+          description: Contagem de usuários
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  users: {type: integer, format: int64, example: 3}
+        '403': {description: Acesso negado}
+  /actuator/health:
+    get:
+      security: []
+      summary: Saúde da aplicação
+      responses:
+        '200':
+          description: Aplicação no ar
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: {type: string, example: UP}
 components:
   securitySchemes:
     bearerAuth:
@@ -198,3 +238,56 @@ components:
         description: {type: string, maxLength: 2000}
         priority: {type: string, enum: [LOW, MEDIUM, HIGH, URGENT]}
         dueDate: {type: string, format: date}
+    ErrorResponse:
+      type: object
+      description: Corpo de todos os erros da API
+      properties:
+        timestamp: {type: string, format: date-time}
+        status: {type: integer, example: 404}
+        error: {type: string, example: Not Found}
+        message: {type: string, example: Projeto não encontrado}
+        path: {type: string, example: /api/v1/projects/99}
+    AuthResponse:
+      type: object
+      properties:
+        accessToken: {type: string, example: eyJhbGciOiJIUzI1NiJ9...}
+        tokenType: {type: string, example: Bearer}
+        expiresInSeconds: {type: integer, format: int64, example: 3600}
+    UserResponse:
+      type: object
+      properties:
+        id: {type: integer, format: int64}
+        name: {type: string}
+        email: {type: string, format: email}
+        role: {type: string, enum: [USER, ADMIN]}
+        createdAt: {type: string, format: date-time}
+    UserPage:
+      type: object
+      properties:
+        content:
+          type: array
+          items: {$ref: '#/components/schemas/UserResponse'}
+        totalElements: {type: integer, format: int64}
+        totalPages: {type: integer}
+        number: {type: integer}
+        size: {type: integer}
+    ProjectResponse:
+      type: object
+      properties:
+        id: {type: integer, format: int64}
+        name: {type: string}
+        description: {type: string}
+        status: {type: string, enum: [PLANNED, IN_PROGRESS, COMPLETED, ARCHIVED]}
+        ownerId: {type: integer, format: int64}
+        createdAt: {type: string, format: date-time}
+    TaskResponse:
+      type: object
+      properties:
+        id: {type: integer, format: int64}
+        projectId: {type: integer, format: int64}
+        title: {type: string}
+        description: {type: string}
+        status: {type: string, enum: [TODO, IN_PROGRESS, DONE, CANCELED]}
+        priority: {type: string, enum: [LOW, MEDIUM, HIGH, URGENT]}
+        dueDate: {type: string, format: date}
+        createdAt: {type: string, format: date-time}

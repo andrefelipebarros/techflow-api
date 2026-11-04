@@ -1,0 +1,38 @@
+name: Desktop CI
+
+on:
+  push:
+    branches: ["main", "master"]
+    paths: ["desktop/**", ".github/workflows/desktop-ci.yml"]
+  pull_request:
+    paths: ["desktop/**", ".github/workflows/desktop-ci.yml"]
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    working-directory: desktop
+
+jobs:
+  build:
+    name: Compilar e testar o app desktop
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up Java
+        uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Compilar e rodar os testes
+        run: ./build.sh test
+
+      - name: Guardar o jar
+        uses: actions/upload-artifact@v7
+        with:
+          name: TechFlow-desktop-jar
+          path: desktop/dist/TechFlow.jar

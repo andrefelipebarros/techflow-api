@@ -1,0 +1,22 @@
+# Maven
+target/
+.mvn/wrapper/maven-wrapper.jar
+
+# IDEs
+.idea/
+*.iml
+.vscode/
+.DS_Store
+
+# Variáveis locais
+.env
+
+# App desktop
+desktop/out/
+desktop/out-tests/
+desktop/dist/
+desktop/dist-exe/
+desktop/installer/
+desktop/sources.txt
+*.class
+!desktop/TechFlow.exe

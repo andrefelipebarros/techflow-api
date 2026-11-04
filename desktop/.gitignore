@@ -1,0 +1,8 @@
+out/
+out-tests/
+dist/
+dist-exe/
+sources.txt
+*.class
+.idea/
+*.iml
