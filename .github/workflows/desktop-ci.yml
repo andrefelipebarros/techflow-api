@@ -28,6 +28,9 @@ jobs:
           distribution: temurin
           java-version: '21'
 
+      - name: Dar permissão ao script de build
+        run: chmod +x build.sh
+
       - name: Compilar e rodar os testes
         run: ./build.sh test
 
@@ -36,3 +39,4 @@ jobs:
         with:
           name: TechFlow-desktop-jar
           path: desktop/dist/TechFlow.jar
+          
